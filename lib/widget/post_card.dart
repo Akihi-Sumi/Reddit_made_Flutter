@@ -273,7 +273,7 @@ class PostCard extends ConsumerWidget {
                                       post.communityName))
                                   .when(
                                     data: (data) {
-                                      if (data.mods.contains(user.uid)) {
+                                      if (data!.mods.contains(user.uid)) {
                                         return IconButton(
                                           onPressed: () =>
                                               deletePost(ref, context),

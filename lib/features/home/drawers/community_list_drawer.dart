@@ -53,7 +53,7 @@ class CommunityListDrawer extends ConsumerWidget {
                               backgroundImage: NetworkImage(community.avatar),
                             ),
                             title: Text(
-                              community.name,
+                              'r/${community.name}',
                               style: const TextStyle(fontSize: 18),
                             ),
                             onTap: () {
