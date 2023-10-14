@@ -27,7 +27,7 @@ final postControllerProvider =
 });
 
 final userPostsProvider =
-    StreamProvider.family((ref, List<Community> communities) {
+    StreamProvider.family((ref, List<CommunityModel> communities) {
   final postController = ref.watch(postControllerProvider.notifier);
   return postController.fetchUserPosts(communities);
 });
@@ -63,7 +63,7 @@ class PostController extends StateNotifier<bool> {
   void shareTextPost({
     required BuildContext context,
     required String title,
-    required Community selectedCommunity,
+    required CommunityModel selectedCommunity,
     required String description,
   }) async {
     state = true;
@@ -100,7 +100,7 @@ class PostController extends StateNotifier<bool> {
   void shareLinkPost({
     required BuildContext context,
     required String title,
-    required Community selectedCommunity,
+    required CommunityModel selectedCommunity,
     required String link,
   }) async {
     state = true;
@@ -137,7 +137,7 @@ class PostController extends StateNotifier<bool> {
   void shareImagePost({
     required BuildContext context,
     required String title,
-    required Community selectedCommunity,
+    required CommunityModel selectedCommunity,
     required File? file,
     required Uint8List? webFile,
   }) async {
@@ -180,7 +180,7 @@ class PostController extends StateNotifier<bool> {
     });
   }
 
-  Stream<List<Post>> fetchUserPosts(List<Community> communities) {
+  Stream<List<Post>> fetchUserPosts(List<CommunityModel> communities) {
     if (communities.isNotEmpty) {
       return _postRepository.fetchUserPosts(communities);
     }

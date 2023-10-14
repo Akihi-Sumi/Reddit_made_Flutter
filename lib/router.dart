@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:reddit_flutter/features/auth/login_screen.dart';
+import 'package:reddit_flutter/features/auth/signin_screen.dart';
 import 'package:reddit_flutter/features/community/screens/add_mods_screen.dart';
 import 'package:reddit_flutter/features/community/screens/community_screen.dart';
 import 'package:reddit_flutter/features/community/screens/create_community_screen.dart';
@@ -14,7 +14,7 @@ import 'package:reddit_flutter/features/user_profile/screens/user_profile_screen
 import 'package:routemaster/routemaster.dart';
 
 final loggedOutRoute = RouteMap(routes: {
-  '/': (_) => const MaterialPage(child: LoginScreen()),
+  '/': (_) => const MaterialPage(child: SigninScreen()),
 });
 
 final loggedInRoute = RouteMap(

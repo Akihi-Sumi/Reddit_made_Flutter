@@ -37,6 +37,24 @@ class AuthRepository {
 
   Stream<User?> get authStateChange => _auth.authStateChanges();
 
+  User? user = FirebaseAuth.instance.currentUser;
+
+  // FutureEither<UserModel> signInWithEmailAndPassword(
+  //     String email, String password) async {
+  //   try {
+  //     await _auth.signInWithEmailAndPassword(email: email, password: password);
+
+  //     return right(UserModel(
+  //         name: name,
+  //         profilePic: profilePic,
+  //         banner: banner,
+  //         uid: uid,
+  //         isAuthenticated: isAuthenticated,
+  //         karma: karma,
+  //         awards: awards));
+  //   } catch (e) {}
+  // }
+
   FutureEither<UserModel> signInWithGoogle(bool isFromLogin) async {
     try {
       UserCredential userCredential;

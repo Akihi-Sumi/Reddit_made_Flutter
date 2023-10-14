@@ -60,7 +60,7 @@ class CommunityController extends StateNotifier<bool> {
   void createCommunity(String name, BuildContext context) async {
     state = true;
     final uid = _ref.read(userProvider)?.uid ?? '';
-    Community community = Community(
+    CommunityModel community = CommunityModel(
       id: name,
       name: name,
       banner: Constants.bannerDefault,
@@ -77,7 +77,7 @@ class CommunityController extends StateNotifier<bool> {
     });
   }
 
-  void joinCommunity(Community community, BuildContext context) async {
+  void joinCommunity(CommunityModel community, BuildContext context) async {
     final user = _ref.read(userProvider)!;
 
     Either<Failure, void> res;
@@ -96,12 +96,12 @@ class CommunityController extends StateNotifier<bool> {
     });
   }
 
-  Stream<List<Community>> getUserCommunities() {
+  Stream<List<CommunityModel>> getUserCommunities() {
     final uid = _ref.read(userProvider)!.uid;
     return _communityRepository.getUserCommunities(uid);
   }
 
-  Stream<Community> getCommunityByName(String name) {
+  Stream<CommunityModel> getCommunityByName(String name) {
     return _communityRepository.getCommunityByName(name);
   }
 
@@ -111,7 +111,7 @@ class CommunityController extends StateNotifier<bool> {
     required Uint8List? profileWebFile,
     required Uint8List? bannerWebFile,
     required BuildContext context,
-    required Community community,
+    required CommunityModel community,
   }) async {
     state = true;
     if (profileFile != null || profileWebFile != null) {
@@ -150,7 +150,7 @@ class CommunityController extends StateNotifier<bool> {
     );
   }
 
-  Stream<List<Community>> searchCommunity(String query) {
+  Stream<List<CommunityModel>> searchCommunity(String query) {
     return _communityRepository.searchCommunity(query);
   }
 

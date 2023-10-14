@@ -17,14 +17,14 @@ class CommunityRepository {
   CommunityRepository({required FirebaseFirestore firestore})
       : _firestore = firestore;
 
-  FutureVoid createCommunity(Community community) async {
+  FutureVoid createCommunity(CommunityModel community) async {
     try {
       var communityDoc = await _communities.doc(community.name).get();
       if (communityDoc.exists) {
         throw 'Community with the same name already exists!';
       }
 
-      return right(_communities.doc(community.name).set(community.toMap()));
+      return right(_communities.doc(community.name).set(community.toJson()));
     } on FirebaseException catch (e) {
       throw e.message!;
     } catch (e) {
@@ -56,27 +56,30 @@ class CommunityRepository {
     }
   }
 
-  Stream<List<Community>> getUserCommunities(String uid) {
+  Stream<List<CommunityModel>> getUserCommunities(String uid) {
     return _communities
         .where('members', arrayContains: uid)
         .snapshots()
         .map((event) {
-      List<Community> communities = [];
+      List<CommunityModel> communities = [];
+
       for (var doc in event.docs) {
-        communities.add(Community.fromMap(doc.data() as Map<String, dynamic>));
+        communities
+            .add(CommunityModel.fromJson(doc.data() as Map<String, dynamic>));
       }
+
       return communities;
     });
   }
 
-  Stream<Community> getCommunityByName(String name) {
-    return _communities.doc(name).snapshots().map(
-        (event) => Community.fromMap(event.data() as Map<String, dynamic>));
+  Stream<CommunityModel> getCommunityByName(String name) {
+    return _communities.doc(name).snapshots().map((event) =>
+        CommunityModel.fromJson(event.data() as Map<String, dynamic>));
   }
 
-  FutureVoid editCommunity(Community community) async {
+  FutureVoid editCommunity(CommunityModel community) async {
     try {
-      return right(_communities.doc(community.name).update(community.toMap()));
+      return right(_communities.doc(community.name).update(community.toJson()));
     } on FirebaseException catch (e) {
       throw e.message!;
     } catch (e) {
@@ -84,7 +87,7 @@ class CommunityRepository {
     }
   }
 
-  Stream<List<Community>> searchCommunity(String query) {
+  Stream<List<CommunityModel>> searchCommunity(String query) {
     return _communities
         .where(
           'name',
@@ -98,10 +101,10 @@ class CommunityRepository {
         )
         .snapshots()
         .map((event) {
-      List<Community> communities = [];
+      List<CommunityModel> communities = [];
       for (var community in event.docs) {
-        communities
-            .add(Community.fromMap(community.data() as Map<String, dynamic>));
+        communities.add(
+            CommunityModel.fromJson(community.data() as Map<String, dynamic>));
       }
       return communities;
     });

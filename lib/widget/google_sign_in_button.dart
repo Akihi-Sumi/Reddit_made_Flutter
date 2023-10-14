@@ -4,9 +4,10 @@ import 'package:reddit_flutter/core/constants/constants.dart';
 import 'package:reddit_flutter/features/auth/auth_controller.dart';
 import 'package:reddit_flutter/theme/palette.dart';
 
-class SignInButton extends ConsumerWidget {
+class GoogleSignInButton extends ConsumerWidget {
   final bool isFromLogin;
-  const SignInButton({Key? key, this.isFromLogin = true}) : super(key: key);
+  const GoogleSignInButton({Key? key, this.isFromLogin = true})
+      : super(key: key);
 
   void signInWithGoogle(BuildContext context, WidgetRef ref) {
     ref
