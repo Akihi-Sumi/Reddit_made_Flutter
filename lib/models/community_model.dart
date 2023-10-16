@@ -1,31 +1,86 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:flutter/foundation.dart';
 
-part 'community_model.freezed.dart';
-part 'community_model.g.dart';
+class Community {
+  final String id;
+  final String name;
+  final String banner;
+  final String avatar;
+  final List<String> members;
+  final List<String> mods;
+  Community({
+    required this.id,
+    required this.name,
+    required this.banner,
+    required this.avatar,
+    required this.members,
+    required this.mods,
+  });
 
-@freezed
-class CommunityModel with _$CommunityModel {
-  const factory CommunityModel({
-    required String id,
-    required String name,
-    required String banner,
-    required String avatar,
-    required List<String> members,
-    required List<String> mods,
-  }) = _CommunityModel;
-
-  factory CommunityModel.fromJson(Map<String, dynamic> json) =>
-      _$CommunityModelFromJson(json);
-
-  factory CommunityModel.fromDocumentSnapshot(DocumentSnapshot ds) {
-    final data = ds.data()! as Map<String, dynamic>;
-
-    return CommunityModel.fromJson(<String, dynamic>{
-      ...data,
-      'communityId': ds.id,
-    });
+  Community copyWith({
+    String? id,
+    String? name,
+    String? banner,
+    String? avatar,
+    List<String>? members,
+    List<String>? mods,
+  }) {
+    return Community(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      banner: banner ?? this.banner,
+      avatar: avatar ?? this.avatar,
+      members: members ?? this.members,
+      mods: mods ?? this.mods,
+    );
   }
 
-  const CommunityModel._();
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'name': name,
+      'banner': banner,
+      'avatar': avatar,
+      'members': members,
+      'mods': mods,
+    };
+  }
+
+  factory Community.fromMap(Map<String, dynamic> map) {
+    return Community(
+      id: map['id'] ?? '',
+      name: map['name'] ?? '',
+      banner: map['banner'] ?? '',
+      avatar: map['avatar'] ?? '',
+      members: List<String>.from(map['members']),
+      mods: List<String>.from(map['mods']),
+    );
+  }
+
+  @override
+  String toString() {
+    return 'Community(id: $id, name: $name, banner: $banner, avatar: $avatar, members: $members, mods: $mods)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is Community &&
+        other.id == id &&
+        other.name == name &&
+        other.banner == banner &&
+        other.avatar == avatar &&
+        listEquals(other.members, members) &&
+        listEquals(other.mods, mods);
+  }
+
+  @override
+  int get hashCode {
+    return id.hashCode ^
+        name.hashCode ^
+        banner.hashCode ^
+        avatar.hashCode ^
+        members.hashCode ^
+        mods.hashCode;
+  }
 }

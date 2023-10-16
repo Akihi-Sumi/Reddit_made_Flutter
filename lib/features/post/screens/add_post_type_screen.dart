@@ -30,8 +30,8 @@ class _AddPostTypeScreenState extends ConsumerState<AddPostTypeScreen> {
   final linkController = TextEditingController();
   File? bannerFile;
   Uint8List? bannerWebFile;
-  List<CommunityModel> communities = [];
-  CommunityModel? selectedCommunity;
+  List<Community> communities = [];
+  Community? selectedCommunity;
 
   @override
   void dispose() {

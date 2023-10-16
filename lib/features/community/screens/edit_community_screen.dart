@@ -62,7 +62,7 @@ class _EditCommunityScreenState extends ConsumerState<EditCommunityScreen> {
     }
   }
 
-  void save(CommunityModel community) {
+  void save(Community community) {
     ref.read(communityControllerProvider.notifier).editCommunity(
           profileFile: profileFile,
           bannerFile: bannerFile,

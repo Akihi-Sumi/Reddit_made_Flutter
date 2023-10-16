@@ -15,7 +15,7 @@ class CommunityListDrawer extends ConsumerWidget {
     Routemaster.of(context).push('/create-community');
   }
 
-  void navigateToCommunity(BuildContext context, CommunityModel community) {
+  void navigateToCommunity(BuildContext context, Community community) {
     Routemaster.of(context).push('/r/${community.name}');
   }
 
@@ -31,13 +31,7 @@ class CommunityListDrawer extends ConsumerWidget {
             isGuest
                 ? const GoogleSignInButton()
                 : ListTile(
-                    title: const Text(
-                      'Create a community',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    title: const Text('Create a community'),
                     leading: const Icon(Icons.add),
                     onTap: () => navigateToCreateCommunity(context),
                   ),
@@ -52,10 +46,7 @@ class CommunityListDrawer extends ConsumerWidget {
                             leading: CircleAvatar(
                               backgroundImage: NetworkImage(community.avatar),
                             ),
-                            title: Text(
-                              'r/${community.name}',
-                              style: const TextStyle(fontSize: 18),
-                            ),
+                            title: Text('r/${community.name}'),
                             onTap: () {
                               navigateToCommunity(context, community);
                             },
