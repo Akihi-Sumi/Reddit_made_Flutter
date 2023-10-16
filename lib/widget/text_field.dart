@@ -1,5 +1,28 @@
 import 'package:flutter/material.dart';
 
+class NameField extends StatelessWidget {
+  final void Function(String value) onChanged;
+
+  const NameField({Key? key, required this.onChanged}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 16, right: 16),
+      child: TextFormField(
+        autofillHints: const [AutofillHints.name],
+        keyboardType: TextInputType.name,
+        textInputAction: TextInputAction.next,
+        onChanged: onChanged,
+        decoration: TextFormStyle.onGeneral(
+          hint: "UserName",
+          iconData: Icons.account_circle,
+        ),
+      ),
+    );
+  }
+}
+
 class EmailField extends StatelessWidget {
   final void Function(String value) onChanged;
 
@@ -12,8 +35,12 @@ class EmailField extends StatelessWidget {
       child: TextFormField(
         autofillHints: const [AutofillHints.email],
         keyboardType: TextInputType.emailAddress,
+        textInputAction: TextInputAction.next,
         onChanged: onChanged,
-        decoration: TextFormStyle.onGeneral(iconData: Icons.email),
+        decoration: TextFormStyle.onGeneral(
+          hint: "Email",
+          iconData: Icons.email,
+        ),
       ),
     );
   }
@@ -42,10 +69,13 @@ class PasswordField extends StatelessWidget {
 class TextFormStyle {
   TextFormStyle();
 
-  static InputDecoration onGeneral({required IconData iconData}) =>
+  static InputDecoration onGeneral({
+    required String? hint,
+    required IconData iconData,
+  }) =>
       InputDecoration(
         contentPadding: EdgeInsets.zero,
-        hintText: "Email",
+        hintText: hint,
         prefixIcon: Icon(
           iconData,
           color: Colors.grey,

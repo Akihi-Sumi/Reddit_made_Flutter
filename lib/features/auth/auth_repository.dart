@@ -38,22 +38,81 @@ class AuthRepository {
   Stream<User?> get authStateChange => _auth.authStateChanges();
 
   User? user = FirebaseAuth.instance.currentUser;
+  late UserModel _userModel;
 
-  // FutureEither<UserModel> signInWithEmailAndPassword(
-  //     String email, String password) async {
-  //   try {
-  //     await _auth.signInWithEmailAndPassword(email: email, password: password);
+  FutureEither<UserModel> signUpWithEmailAndPassword(
+      String email, String password) async {
+    try {
+      _auth
+          .createUserWithEmailAndPassword(email: email, password: password)
+          .then((userCredential) async {
+        if (userCredential.additionalUserInfo!.isNewUser) {
+          _userModel = UserModel(
+            name: userCredential.user!.displayName ?? 'No Name',
+            profilePic:
+                userCredential.user!.photoURL ?? Constants.avatarDefault,
+            banner: Constants.bannerDefault,
+            uid: userCredential.user!.uid,
+            isAuthenticated: true,
+            karma: 0,
+            awards: [
+              'awesomeAns',
+              'gold',
+              'platinum',
+              'helpful',
+              'plusone',
+              'rocket',
+              'thankyou',
+              'til',
+            ],
+          );
 
-  //     return right(UserModel(
-  //         name: name,
-  //         profilePic: profilePic,
-  //         banner: banner,
-  //         uid: uid,
-  //         isAuthenticated: isAuthenticated,
-  //         karma: karma,
-  //         awards: awards));
-  //   } catch (e) {}
-  // }
+          await _users.doc(_auth.currentUser!.uid).set(_userModel.toJson());
+        } else {
+          _userModel = await getUserData(userCredential.user!.uid).first;
+        }
+      });
+
+      return right(_userModel);
+    } on FirebaseException catch (e) {
+      throw e.message!;
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  }
+
+  FutureEither<UserModel> signInWithEmailAndPassword(
+      String email, String password) async {
+    try {
+      var userCredential = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
+
+      UserModel userModel = UserModel(
+        name: userCredential.user!.displayName ?? 'No Name',
+        profilePic: userCredential.user!.photoURL ?? Constants.avatarDefault,
+        banner: Constants.bannerDefault,
+        uid: userCredential.user!.uid,
+        isAuthenticated: true,
+        karma: 0,
+        awards: [
+          'awesomeAns',
+          'gold',
+          'platinum',
+          'helpful',
+          'plusone',
+          'rocket',
+          'thankyou',
+          'til',
+        ],
+      );
+
+      return right(userModel);
+    } on FirebaseException catch (e) {
+      throw e.message!;
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  }
 
   FutureEither<UserModel> signInWithGoogle(bool isFromLogin) async {
     try {
@@ -102,7 +161,7 @@ class AuthRepository {
             'til',
           ],
         );
-        await _users.doc(userCredential.user!.uid).set(userModel.toMap());
+        await _users.doc(userCredential.user!.uid).set(userModel.toJson());
       } else {
         userModel = await getUserData(userCredential.user!.uid).first;
       }
@@ -128,7 +187,7 @@ class AuthRepository {
         awards: [],
       );
 
-      await _users.doc(userCredential.user!.uid).set(userModel.toMap());
+      await _users.doc(userCredential.user!.uid).set(userModel.toJson());
 
       return right(userModel);
     } on FirebaseException catch (e) {
@@ -140,7 +199,7 @@ class AuthRepository {
 
   Stream<UserModel> getUserData(String uid) {
     return _users.doc(uid).snapshots().map(
-        (event) => UserModel.fromMap(event.data() as Map<String, dynamic>));
+        (event) => UserModel.fromJson(event.data() as Map<String, dynamic>));
   }
 
   void logOut() async {

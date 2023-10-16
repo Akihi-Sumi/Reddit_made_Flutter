@@ -34,33 +34,33 @@ class AuthController extends StateNotifier<bool> {
 
   Stream<User?> get authStateChange => _authRepository.authStateChange;
 
-  // void singInwithEmailAndPassword(
-  //     BuildContext context, String email, String password) async {
-  //   state = true;
-  //   final user =
-  //       await _authRepository.signInWithEmailAndPassword(email, password);
-  //   state = false;
+  void singInWithEmailAndPassword(
+      BuildContext context, String email, String password) async {
+    state = true;
+    final user =
+        await _authRepository.signInWithEmailAndPassword(email, password);
+    state = false;
 
-  //   user.fold(
-  //     (l) => showSnackBar(context, l.message),
-  //     (userModel) =>
-  //         _ref.read(userProvider.notifier).update((state) => userModel),
-  //   );
-  // }
+    user.fold(
+      (l) => showSnackBar(context, l.message),
+      (userModel) =>
+          _ref.read(userProvider.notifier).update((state) => userModel),
+    );
+  }
 
-  // signUpWithEmailAndPassword(
-  //     BuildContext context, String email, String password) async {
-  //   state = true;
-  //   final user =
-  //       await _authRepository.signUpWithEmailAndPassword(email, password);
-  //   state = false;
+  signUpWithEmailAndPassword(
+      BuildContext context, String email, String password) async {
+    state = true;
+    final user =
+        await _authRepository.signUpWithEmailAndPassword(email, password);
+    state = false;
 
-  //   user.fold(
-  //     (l) => showSnackBar(context, l.message),
-  //     (userModel) =>
-  //         _ref.read(userProvider.notifier).update((state) => userModel),
-  //   );
-  // }
+    user.fold(
+      (l) => showSnackBar(context, l.message),
+      (userModel) =>
+          _ref.read(userProvider.notifier).update((state) => userModel),
+    );
+  }
 
   void signInWithGoogle(BuildContext context, bool isFromLogin) async {
     state = true;

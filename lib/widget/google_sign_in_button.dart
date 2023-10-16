@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reddit_flutter/core/constants/constants.dart';
 import 'package:reddit_flutter/features/auth/auth_controller.dart';
+import 'package:reddit_flutter/features/home/home_screen.dart';
 import 'package:reddit_flutter/theme/palette.dart';
 
 class GoogleSignInButton extends ConsumerWidget {
@@ -9,10 +10,13 @@ class GoogleSignInButton extends ConsumerWidget {
   const GoogleSignInButton({Key? key, this.isFromLogin = true})
       : super(key: key);
 
-  void signInWithGoogle(BuildContext context, WidgetRef ref) {
+  void signInWithGoogle(BuildContext context, WidgetRef ref) async {
     ref
         .read(authControllerProvider.notifier)
         .signInWithGoogle(context, isFromLogin);
+
+    await Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => const HomeScreen()));
   }
 
   @override
